@@ -2,7 +2,8 @@
 """
 annotation demos
 """
-from typing import List, Union
+from typing import List
+from typing import Union
 
 
 def sum_mixed_list(mxd_list: List[Union[float, int]]) -> float:
