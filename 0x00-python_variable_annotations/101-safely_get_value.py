@@ -2,6 +2,7 @@
 """
 annotation demos
 """
+from typing import Dict
 
 
 def safely_get_value(dct, key, default=None):
