@@ -3,17 +3,11 @@
 Python async demo
 """
 import asyncio
-from random import randrange
+from random import uniform
 
 
 async def wait_random(max_delay: int = 10) -> float:
     """ Get random number wait and return it """
-    ret = -1
-    if max_delay <= 0:
-        ret = 0
-        max_delay = 1
-    rn = randrange(0, max_delay)
+    rn = uniform(0, max_delay)
     await asyncio.sleep(rn)
-    if ret == 0:
-        return ret
     return rn
