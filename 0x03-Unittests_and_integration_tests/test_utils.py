@@ -61,3 +61,22 @@ class TestGetJson(TestCase):
             resp_mock.return_value = resp
             self.assertEqual(utils.get_json(url), out)
             resp_mock.assert_called_once_with(url)
+
+
+class TestMemoize(TestCase):
+    """ test momoization"""
+
+    def test_memoize(self):
+        """ test memoize"""
+        class TestClass:
+            def a_method(self):
+                return 42
+
+            @utils.memoize
+            def a_property(self):
+                return self.a_method()
+        with patch.object(TestClass, "a_method", return_value=42) as mk:
+            tst = TestClass()
+            self.assertEqual(42, tst.a_property)
+            self.assertEqual(42, tst.a_property)
+            mk.assert_called_once()
