@@ -2,10 +2,10 @@
 """
 Test nested_map
 """
-from unittest.mock import patch
+from unittest.mock import patch, Mock, MagicMock
 from unittest import TestCase
 from parameterized import parameterized
-from utils import access_nested_map, get_json
+import utils  # import access_nested_map, get_json
 
 
 class TestAccessNestedMap(TestCase):
@@ -28,7 +28,7 @@ class TestAccessNestedMap(TestCase):
     ])
     def test_access_nested_map(self, nmap, out):
         """ test for access_nested_map """
-        self.assertEqual(access_nested_map(*nmap), out)
+        self.assertEqual(utils.access_nested_map(*nmap), out)
 
     @parameterized.expand([
         (nested_map4, path4, KeyError('a')),
@@ -36,7 +36,7 @@ class TestAccessNestedMap(TestCase):
     ])
     def test_access_nested_map_exception(self, nmap, path, out):
         with self.assertRaises(KeyError) as exc:
-            access_nested_map(nmap, path)
+            utils.access_nested_map(nmap, path)
         self.assertIsInstance(exc.exception, KeyError)
         self.assertEqual(str(exc.exception), str(out))
 
@@ -55,10 +55,9 @@ class TestGetJson(TestCase):
     ])
     def test_get_json(self, url, out):
         """ test get json method"""
-        self.patcher = patch("utils.requests.get")
-        self.patcher.return_value = "None"
-        self.patcher.start()
-        with patch("utils.get_json") as mock_get:
-            mock_get.return_value = out
-            self.assertEqual(get_json(url), out)
-        self.patcher.stop()
+        with patch("utils.requests.get") as resp_mock:
+            resp = MagicMock()
+            resp.json.return_value = out
+            resp_mock.return_value = resp
+            self.assertEqual(utils.get_json(url), out)
+            resp_mock.assert_called_once_with(url)
