@@ -2,7 +2,7 @@
 """
 Test nested_map
 """
-from unittest.mock import patch, Mock, MagicMock
+from unittest.mock import patch, MagicMock
 from unittest import TestCase
 from parameterized import parameterized
 import utils  # import access_nested_map, get_json
