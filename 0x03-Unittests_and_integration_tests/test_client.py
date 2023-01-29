@@ -4,8 +4,8 @@ Test For Client Module
 """
 import unittest
 from unittest.mock import patch
-import client
 from parameterized import parameterized
+import client
 
 
 class TestGithubOrgClient(unittest.TestCase):
@@ -13,13 +13,13 @@ class TestGithubOrgClient(unittest.TestCase):
 
     @parameterized.expand([
         ("google"),
-        ("abc")
+        ("abc"),
     ])
     @patch("client.get_json")
     def test_org(self, org, mk_get_json):
         """ Test Org property"""
 
-        gcl = client.GithubOrgClient(org)
-        url = gcl.ORG_URL.format(org=org)
-        gcl.org()
+        gc = client.GithubOrgClient(org)
+        url = gc.ORG_URL.format(org=org)
+        gc.org()
         mk_get_json.assert_called_once_with(url)
