@@ -5,7 +5,7 @@ Test nested_map
 from unittest.mock import patch, MagicMock
 from unittest import TestCase
 from parameterized import parameterized
-import utils  # import access_nested_map, get_json
+import utils
 
 
 class TestAccessNestedMap(TestCase):
@@ -35,6 +35,7 @@ class TestAccessNestedMap(TestCase):
         (nested_map5, path5, KeyError('b'))
     ])
     def test_access_nested_map_exception(self, nmap, path, out):
+        """ test exception"""
         with self.assertRaises(KeyError) as exc:
             utils.access_nested_map(nmap, path)
         self.assertIsInstance(exc.exception, KeyError)
@@ -80,9 +81,10 @@ class TestMemoize(TestCase):
                 """ dummy property"""
                 return self.a_method()
 
-        with patch.object(TestClass, "a_method", return_value=42) as mk:
+        with patch.object(TestClass, "a_method") as mk:
+            mk.return_value = 42
             tst = TestClass()
             res2 = tst.a_property
             res2 = tst.a_property
-            self.assertEqual(42, res2)
             mk.assert_called_once()
+            self.assertEqual(42, res2)
