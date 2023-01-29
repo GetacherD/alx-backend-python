@@ -11,11 +11,6 @@ import client
 class TestGithubOrgClient(unittest.TestCase):
     """ Class for testing client module """
 
-    repo1 = {"license": {"key": "my_license"}}
-    license_key1 = "my_license"
-    repo2 = {"license": {"key": "other_license"}}
-    license_key2 = "my_license"
-
     @parameterized.expand([
         ("google"),
         ("abc"),
@@ -81,8 +76,8 @@ class TestGithubOrgClient(unittest.TestCase):
             mock_repo_url.assert_called_once()
 
     @parameterized.expand([
-        (repo1, license_key1, True),
-        (repo2, license_key2, False),
+        ({"license": {"key": "my_license"}}, "my_license", True),
+        ({"license": {"key": "other_license"}}, "my_license", False),
     ])
     def test_has_license(self, repo, lic, out):
         """ test has license """
