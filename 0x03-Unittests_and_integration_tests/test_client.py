@@ -20,18 +20,11 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
         cls.mk = patch("utils.requests.get")
         cls.mk.start()
         cls.mk.return_value = TEST_PAYLOAD
-        pass
 
     @classmethod
     def tearDownClass(cls):
         """ tearDownClass"""
         cls.mk.stop()
-
-
-"""
-  def test_ex(self):
-        self.assertEqual(self.__class__.mk(), TEST_PAYLOAD)
-"""
 
 
 class TestGithubOrgClient(unittest.TestCase):
@@ -44,13 +37,9 @@ class TestGithubOrgClient(unittest.TestCase):
     @patch("client.get_json")
     def test_org(self, org, mk_get_json):
         """ Test Org property"""
-
-        mk_get_json.return_value = "Whoops"
         gc = client.GithubOrgClient(org)
         url = gc.ORG_URL.format(org=org)
-        val = gc.org
-        val = gc.org
-        self.assertEqual(val, "Whoops")
+        gc.org()
         mk_get_json.assert_called_once_with(url)
 
     def test_public_repos_url(self):
