@@ -38,9 +38,9 @@ class TestGithubOrgClient(unittest.TestCase):
     def test_org(self, org, mk_get_json):
         """ Test Org property"""
         gc = client.GithubOrgClient(org)
-        url = gc.ORG_URL.format(org=org)
         gc.org()
-        mk_get_json.assert_called_once_with(url)
+        mk_get_json.assert_called_once_with(
+            f"https://api.github.com/orgs/{org}")
 
     def test_public_repos_url(self):
         """ test property"""
