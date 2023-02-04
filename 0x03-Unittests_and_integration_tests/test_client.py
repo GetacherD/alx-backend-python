@@ -3,9 +3,35 @@
 Test For Client Module
 """
 import unittest
-from unittest.mock import patch, PropertyMock
-from parameterized import parameterized
+from unittest.mock import patch, PropertyMock, MagicMock
+from parameterized import parameterized, parameterized_class
 import client
+from fixtures import TEST_PAYLOAD
+
+
+@parameterized_class(
+    ("org_payload", "repos_payload", "expected_payload", "apache2_repos"),
+    TEST_PAYLOAD[0])
+class TestIntegrationGithubOrgClient(unittest.TestCase):
+    """ Integration Test """
+    @classmethod
+    def setUpClass(cls):
+        """ set up class """
+        cls.mk = patch("utils.requests.get")
+        cls.mk.start()
+        cls.mk.return_value = TEST_PAYLOAD
+        pass
+
+    @classmethod
+    def tearDownClass(cls):
+        """ tearDownClass"""
+        cls.mk.stop()
+
+
+"""
+  def test_ex(self):
+        self.assertEqual(self.__class__.mk(), TEST_PAYLOAD)
+"""
 
 
 class TestGithubOrgClient(unittest.TestCase):
@@ -19,9 +45,12 @@ class TestGithubOrgClient(unittest.TestCase):
     def test_org(self, org, mk_get_json):
         """ Test Org property"""
 
+        mk_get_json.return_value = "Whoops"
         gc = client.GithubOrgClient(org)
         url = gc.ORG_URL.format(org=org)
-        gc.org()
+        val = gc.org
+        val = gc.org
+        self.assertEqual(val, "Whoops")
         mk_get_json.assert_called_once_with(url)
 
     def test_public_repos_url(self):
