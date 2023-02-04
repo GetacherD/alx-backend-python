@@ -80,11 +80,11 @@ class TestGithubOrgClient(unittest.TestCase):
 
                                       'name': 'anvil-build'}
         ]
-        with patch("client.GithubOrgClient._public_repos_url"
+        with patch("client.GithubOrgClient._public_repos_url",
+                   new_callable=PropertyMock
                    ) as mock_repo_url:
             mock_repo_url.return_value = "https://api.google.com/repos"
             gc = client.GithubOrgClient("google")
-            gc._public_repos_url()
             self.assertEqual(gc.public_repos(), [
                              'truth',
                              'ruby-openid-apps-discovery',
